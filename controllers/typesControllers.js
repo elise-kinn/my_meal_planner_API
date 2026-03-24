@@ -21,4 +21,21 @@ const addType = async (req, res) => {
 
 }
 
-export { addType }
+const getAllTypes = async (req, res) => {
+    const id_user = req.params.id
+
+    try {
+        const user = await db.one('SELECT username FROM users WHERE id_user = $1', [id_user])
+        if(!user) return res.status(404).json({ message: "Cet utilisateur n'existe pas"})
+        
+        const types = await db.manyOrNone('SELECT name_type FROM types WHERE fk_id_user = $1', [id_user])
+        if(!types) return res.status(404).json({ message: "Aucun type trouvé" })
+            
+        res.status(200).json({ types })
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+export { addType, getAllTypes }
