@@ -29,7 +29,7 @@ const register = async (req, res) => {
                 id_user: newUser.id_user, 
                 username: newUser.username
             }, 
-            process.env.SECRET, 
+            process.env.JWT_SECRET, 
             { expiresIn: "1h" }
         )
 
@@ -66,7 +66,7 @@ const login = async (req, res) => {
                 id_user: user.id_user, 
                 username: user.username
             }, 
-            process.env.SECRET, 
+            process.env.JWT_SECRET, 
             { expiresIn: "1h" }
         )
 

@@ -16,6 +16,8 @@ app.get('/', (req, res) => {
 import usersRoutes from './routes/usersRoutes.js'
 app.use('/api/v1/users', usersRoutes)
 
+import typesRoutes from './routes/typesRoutes.js'
+app.use('/api/v1/types', typesRoutes)
 
 app.listen(process.env.PORT, () => {
     console.log(`Serveur démarré : http://localhost:${process.env.PORT}`)
