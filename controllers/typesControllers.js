@@ -28,7 +28,7 @@ const getAllTypes = async (req, res) => {
         const user = await db.one('SELECT username FROM users WHERE id_user = $1', [id_user])
         if(!user) return res.status(404).json({ message: "Cet utilisateur n'existe pas"})
         
-        const types = await db.manyOrNone('SELECT name_type FROM types WHERE fk_id_user = $1', [id_user])
+        const types = await db.manyOrNone('SELECT name_type, id_type FROM types WHERE fk_id_user = $1', [id_user])
         if(!types) return res.status(404).json({ message: "Aucun type trouvé" })
             
         res.status(200).json({ types })

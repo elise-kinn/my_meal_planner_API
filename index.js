@@ -19,6 +19,9 @@ app.use('/api/v1/users', usersRoutes)
 import typesRoutes from './routes/typesRoutes.js'
 app.use('/api/v1/types', typesRoutes)
 
+import mealsRoutes from './routes/mealsRoutes.js'
+app.use('/api/v1/meals', mealsRoutes)
+
 app.listen(process.env.PORT, () => {
     console.log(`Serveur démarré : http://localhost:${process.env.PORT}`)
 }) 
