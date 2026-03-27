@@ -6,6 +6,6 @@ import { authMidlleware } from '../middlewares/authMiddleware.js'
 
 // Routes
 router.post('/', authMidlleware, addType)
-router.get('/:id', getAllTypes)
+router.get('/:id', authMidlleware, getAllTypes)
 
 export default router
