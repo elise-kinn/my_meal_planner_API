@@ -54,37 +54,24 @@ const addMeal = async (req, res) => {
     }
 }
 
-const getMealsByInput = async (req, res) => {
-    const input = req.params.input
+const getMeals = async (req, res) => {
+    // const input = req.params.input
     const id_user = req.user.id_user
-    
+    const { search, order } = req.query
+
+    const searchFilter = search ? search : '%'
+    const validSortColumns = ['name_meal', 'created_at', 'name_type'];
+    const orderBy = validSortColumns.includes(order) ? order : 'name_meal'
+
     try {
         const meals = await db.manyOrNone(`
-            SELECT id_meal, name_meal
-            FROM meals
+            SELECT id_meal, name_meal, name_type
+            FROM meals AS m
+            LEFT JOIN types AS t ON t.id_type = m.fk_id_type
             WHERE LOWER(name_meal) LIKE LOWER($1 || '%')
-            AND fk_id_user = $2
-            ORDER BY name_meal
-        `, [input, id_user])
-
-        return res.status(200).json(meals)
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-    
-
-}
-
-const getAllMeals = async (req, res) => {
-    const id_user = req.user.id_user
-
-    try {
-        const meals = await db.manyOrNone(`
-            SELECT id_meal, name_meal
-            FROM meals
-            WHERE fk_id_user = $1
-            ORDER BY name_meal
-        `, [ id_user ])
+            AND m.fk_id_user = $2
+            ORDER BY ${orderBy} ASC
+        `, [ searchFilter, id_user ])
 
         return res.status(200).json(meals)
     } catch (error) {
@@ -92,4 +79,4 @@ const getAllMeals = async (req, res) => {
     }
 }
 
-export { addMeal, getMealsByInput, getAllMeals }
+export { addMeal, getMeals }
